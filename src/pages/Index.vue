@@ -1,6 +1,22 @@
 <template>
   <div>
-    <Player position="bottom" persistent />
+    <div>
+      <q-dialog v-model="playing" position="bottom" persistent>
+        <q-card style="width: 350px">
+          <!-- <q-linear-progress :value="0.6" color="primary" /> -->
+
+          <q-card-section class="row items-center no-wrap bg-primary">
+            <div>
+              <div class="text-weight-bold">{{ currentSong }}</div>
+            </div>
+
+            <q-space />
+
+            <q-btn flat round icon="stop" v-close-popup @click="stopSound" />
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+    </div>
 
     <div class="container">
       <div class="row q-mt-md">
@@ -57,7 +73,7 @@
           <q-icon
             name="play_arrow"
             color="green"
-            @click="playSound(song.preview_url)"
+            @click="playSound(song.preview_url, song.name)"
           />
         </q-item-section>
       </q-item>
@@ -66,13 +82,13 @@
 </template>
 
 <script>
-import Player from "../components/Player.vue";
+// import Player from "../components/Player.vue";
 import { Howl, Howler } from "howler";
 
 export default {
   name: "Index",
   components: {
-    Player,
+    // Player,
   },
   data() {
     return {
@@ -90,7 +106,7 @@ export default {
       const songs = await response.json();
       this.songs = songs.tracks.items;
     },
-    playSound(song) {
+    playSound(song, songName) {
       const sound = new Howl({
         src: [song],
         html5: true,
@@ -98,7 +114,18 @@ export default {
       Howler.stop();
       sound.play();
       this.playing = true;
-      this.currentSong = song.name;
+      this.currentSong = songName;
+      sound.on("end", () => {
+        this.stopSound();
+        console.log("Finished!");
+      });
+    },
+    stopSound() {
+      Howler.stop();
+      this.playing = false;
+    },
+    closePlayer() {
+      this.playing = false;
     },
     storeSongInfo(songName, songId) {
       localStorage.setItem("app#2SongName", songName);
