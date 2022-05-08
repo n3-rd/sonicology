@@ -1,9 +1,39 @@
 // app global css in SCSS form
 body {
   // get a nice dark theme colour
-  background-color: #1d1d1d;
+  background-color: #000;
   color: #fff;
 }
 .bg-primary {
   background-color: #3f51b5;
+}
+
+h1 {
+  font-size: clamp(2.125rem, calc(12px + 2.75vw), 2.875rem);
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: clamp(1.75rem, calc(12px + 2vw), 2.25rem);
+  line-height: 1.1;
+}
+
+h3 {
+  font-size: clamp(1.425rem, calc(12px + 1.5vw), 1.875rem);
+  line-height: 1.1;
+}
+
+h4 {
+  font-size: clamp(1.25rem, calc(12px + 1vw), 1.5rem);
+  line-height: 1.1;
+}
+
+p {
+  font-size: clamp(1.15rem, calc(12px + 0.6vw), 1.25rem);
+  line-height: 1.1;
+}
+
+span {
+  font-size: clamp(1rem, calc(12px + 0.4vw), 1.125rem);
+  line-height: 1.1;
 }

@@ -18,32 +18,31 @@
       </q-dialog>
     </div>
 
-    <div class="container">
-      <div class="row q-mt-md">
-        <div class="col-10">
-          <q-input
-            class="q-px-md"
-            outlined
-            v-model="searchText"
-            label="Search Music"
-            bg-color="primary"
-            label-color="white"
-          />
-        </div>
-        <div class="col-2">
-          <q-btn
-            round
-            color="primary"
-            size="md"
-            icon="search"
-            @click="fetchSongs"
-            @keyup.enter="fetchSongs"
-          />
-        </div>
+    <div class="container fixed-top bg-black q-py-md search-container z-top">
+      <q-input
+        class="q-px-md text-center text-white search-music"
+        outlined
+        v-model="searchText"
+        placeholder="Search Music"
+        label-color="white"
+        color="white"
+        dark
+        filled
+        @keyup.enter="fetchSongs"
+      >
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+    </div>
+
+    <div class="loader fixed-center" v-if="loading">
+      <div>
+        <q-spinner color="primary" size="63px" />
       </div>
     </div>
 
-    <q-list bordered class="text-white">
+    <q-list bordered class="text-white q-mt-xl list">
       <q-item
         v-for="song in songs"
         :key="song.id"
@@ -96,6 +95,7 @@ export default {
       songs: [],
       currentSong: "",
       playing: false,
+      loading: false,
     };
   },
   methods: {
@@ -103,7 +103,9 @@ export default {
       const response = await fetch(
         `http://n3rd-last-fm-api.glitch.me/getSongs?songQuery=${this.searchText}`
       );
+      this.loading = true;
       const songs = await response.json();
+      this.loading = false;
       this.songs = songs.tracks.items;
     },
     playSound(song, songName) {
@@ -130,12 +132,15 @@ export default {
     storeSongInfo(songName, songId) {
       localStorage.setItem("app#2SongName", songName);
       localStorage.setItem("app#2SongId", songId);
+      this.$router.push("/similarMusic");
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+// set a search-container variable
+
 #q-app > div > label > div > div > div > div {
   color: #fff;
 }
@@ -148,5 +153,27 @@ export default {
 }
 .song-artist {
   font-size: 0.8rem;
+}
+.search-music {
+  font-size: 1.2rem;
+  color: #fff !important;
+  // set the inner text to white
+  & > input {
+    color: #fff !important;
+  }
+
+  .q-field__input {
+    color: #fff !important;
+    // set placeholder color
+  }
+  .q-placeholder {
+    text-align: center;
+  }
+}
+.list {
+  // set an accurate top margin
+  margin-top: 95px;
+}
+.spinner {
 }
 </style>
