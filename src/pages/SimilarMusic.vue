@@ -29,7 +29,11 @@
             </div>
             <div class="song-artist">
               {{ song.artists[0].name }}
-              <div class="play-button" v-if="song.preview_url">
+              <div
+                class="play-button"
+                v-if="song.preview_url"
+                @click="playSound(song.preview_url, song.name)"
+              >
                 <q-icon name="play_arrow" color="primary" />
               </div>
             </div>
