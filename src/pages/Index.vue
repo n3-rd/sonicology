@@ -30,6 +30,8 @@
         filled
         :input-style="{ textTransform: 'capitalize' }"
         @keyup.enter="fetchSongs"
+        @keydown="fetchSongs"
+        @keypress="fetchSongs"
       >
         <template v-slot:append>
           <q-icon name="search" />
