@@ -30,13 +30,20 @@
         filled
         :input-style="{ textTransform: 'capitalize' }"
         @keyup.enter="fetchSongs"
-        @keydown="fetchSongs"
-        @keypress="fetchSongs"
       >
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
+
+      <div class="q-px-md">
+        <q-btn
+          color="primary"
+          label="Search"
+          class="lt-md full-width"
+          @click="fetchSongs"
+        />
+      </div>
     </div>
 
     <div class="loader fixed-center" v-if="loading">
@@ -199,7 +206,7 @@ export default {
 }
 .list {
   // set an accurate top margin
-  margin-top: 95px;
+  margin-top: 121px;
 }
 .illustration,
 .fetch-error {
