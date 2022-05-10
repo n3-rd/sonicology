@@ -12,7 +12,7 @@
       </q-toolbar-title>
     </q-toolbar>
 
-    <div class="container">
+    <div class="container gt-sm">
       <div class="row">
         <div
           class="col-md-4 q-pa-xl song-grid"
