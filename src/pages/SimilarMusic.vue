@@ -12,6 +12,62 @@
       </q-toolbar-title>
     </q-toolbar>
 
+    <div class="container">
+      <div class="row">
+        <div
+          class="col-md-4 q-pa-xl song-grid"
+          v-for="song in similarSongs"
+          :key="song.id"
+        >
+          <div>
+            <div class="album-art">
+              <img :src="song.album.images[0].url" alt="album art" />
+            </div>
+
+            <div class="song-name">
+              {{ song.name }}
+            </div>
+            <div class="song-artist">
+              {{ song.artists[0].name }}
+              <div class="play-button" v-if="song.preview_url">
+                <q-icon name="play_arrow" color="primary" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <swiper
+      :effect="'cards'"
+      :grabCursor="true"
+      :modules="modules"
+      class="mySwiper lt-md"
+    >
+      <swiper-slide v-for="song in similarSongs" :key="song.id">
+        <div class="album-art">
+          <img :src="song.album.images[0].url" />
+        </div>
+
+        <div class="song-info">
+          <div class="song-name q-py-md">
+            {{ song.name }}
+          </div>
+          <div class="song-artist q-py-md">
+            {{ song.artists[0].name }}
+          </div>
+        </div>
+
+        <q-btn
+          @click="playSound(song.preview_url, song.name)"
+          color="primary"
+          label="Play"
+          icon="play_arrow"
+          class="q-mr-sm"
+        ></q-btn>
+      </swiper-slide>
+    </swiper>
+
     <div>
       <q-dialog v-model="playing" position="bottom" persistent>
         <q-card style="width: 350px">
@@ -41,7 +97,7 @@
       Something went wrong tho.
     </div>
 
-    <q-list bordered class="text-white q-mt-xl list">
+    <!-- <q-list bordered class="text-white q-mt-xl list">
       <div v-for="song in similarSongs" :key="song.id">
         <q-item
           class="q-my-sm"
@@ -63,7 +119,7 @@
           <q-item-section @click="storeSongInfo(song.name, song.id)">
             <q-item-label class="song-name">{{ song.name }}</q-item-label>
             <q-item-label caption lines="1" class="text-white song-artist">
-              <!-- list all the artists -->
+
               {{ song.artists.map((artist) => artist.name).join(", ") }}
             </q-item-label>
           </q-item-section>
@@ -77,15 +133,28 @@
           </q-item-section>
         </q-item>
       </div>
-    </q-list>
+    </q-list> -->
   </div>
 </template>
 <script>
 import { ref } from "vue";
 import { Howl, Howler } from "howler";
+import { Swiper, SwiperSlide } from "swiper/vue";
+
+// Import Swiper styles
+import "swiper/css";
+
+import "swiper/css/effect-cards";
+
+// import required modules
+import { EffectCards } from "swiper";
 
 export default {
   name: "similarMusic",
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
   data() {
     return {
       baseSongId: "",
@@ -96,6 +165,7 @@ export default {
       fetchError: false,
       playing: false,
       currentSong: "",
+      modules: [EffectCards],
     };
   },
   methods: {
@@ -171,5 +241,76 @@ export default {
   transform: translate(-50%, -50%);
   font-size: 1.5rem;
   color: #fff;
+}
+// style swipers
+.swiper-container {
+  width: 100%;
+  height: 100%;
+}
+.swiper-slide {
+  text-align: center;
+  background-color: #fff;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #000;
+  width: 100vw;
+  /* width: 414px; */
+  height: 100vh;
+  // format desktop
+  @media (min-width: 992px) {
+    width: 414px;
+    height: 414px;
+  }
+}
+.swiper-slide {
+}
+.swiper-slide img {
+  width: 100%;
+  height: 100%;
+}
+.song-info {
+  font-size: 1.5rem;
+  color: #fff;
+  .song-name {
+    font-size: 1.5rem;
+    color: #fff;
+  }
+}
+.song-artist {
+  font-size: 1rem;
+  color: #fff;
+}
+// format responsiveness
+@media (max-width: 768px) {
+  .swiper-slide {
+    width: 100%;
+    height: 100%;
+  }
+}
+@media (max-width: 414px) {
+  .swiper-slide {
+    width: 100%;
+    height: 100%;
+  }
+}
+.song-grid {
+  // width: 100%;
+  width: 33%;
+  img {
+    width: 100%;
+  }
+
+  // .play-button {
+  //   position: absolute;
+  //   top: 50%;
+  //   left: 50%;
+  //   transform: translate(-50%, -50%);
+  //   font-size: 1.5rem;
+  //   color: #fff;
+  // }
+
+  // height: 100%;
 }
 </style>
