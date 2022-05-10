@@ -126,7 +126,7 @@ export default {
   methods: {
     async fetchSongs() {
       const response = await fetch(
-        `http://n3rd-last-fm-api.glitch.me/getSongs?songQuery=${this.searchText}`
+        `https://n3rd-last-fm-api.glitch.me/getSongs?songQuery=${this.searchText}`
       );
       this.fetchError = false;
       // const response = await fetch(`http://192.168.43.235:1987/getSongs.json`);
