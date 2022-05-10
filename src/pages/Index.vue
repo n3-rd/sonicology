@@ -54,7 +54,7 @@
 
     <div class="illustration" v-if="illustration">
       <img srcset="undraw_compose_music_ovo2.svg 4x" alt="illustration" />
-      <div class="text-center">
+      <div class="text-center illustration-text">
         Get music recommendations for your favorite songs at <b>sonicology</b>
       </div>
     </div>
@@ -217,6 +217,9 @@ export default {
   transform: translate(-50%, -50%);
   font-size: 1.5rem;
   color: #fff;
+}
+.illustration-text {
+  opacity: 0.5;
 }
 // make destop styles
 @media (min-width: 992px) {

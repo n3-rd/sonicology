@@ -2,7 +2,7 @@
   <div>
     <!-- add an header -->
 
-    <q-toolbar class="bg-primary">
+    <q-toolbar class="bg-primary fixed-top z-max">
       <q-toolbar-title>
         <!-- router-link to /index -->
         <router-link to="/">
