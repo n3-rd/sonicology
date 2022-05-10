@@ -28,6 +28,7 @@
         color="white"
         dark
         filled
+        :input-style="{ textTransform: 'capitalize' }"
         @keyup.enter="fetchSongs"
       >
         <template v-slot:append>
@@ -40,6 +41,19 @@
       <div>
         <q-spinner color="primary" size="63px" />
       </div>
+    </div>
+
+    <div class="illustration" v-if="illustration">
+      <img srcset="undraw_compose_music_ovo2.svg 4x" alt="illustration" />
+      <div class="text-center">
+        Get music recommendations for your favorite songs at <b>sonicology</b>
+      </div>
+    </div>
+
+    <div class="fetch-error" v-if="fetchError">
+      <q-icon name="error" size="xl" color="primary" />
+      <br />
+      Something went wrong tho.
     </div>
 
     <q-list bordered class="text-white q-mt-xl list">
@@ -71,7 +85,7 @@
         <q-item-section side v-if="song.preview_url">
           <q-icon
             name="play_arrow"
-            color="green"
+            color="primary"
             @click="playSound(song.preview_url, song.name)"
           />
         </q-item-section>
@@ -96,6 +110,8 @@ export default {
       currentSong: "",
       playing: false,
       loading: false,
+      illustration: true,
+      fetchError: false,
     };
   },
   methods: {
@@ -103,10 +119,20 @@ export default {
       const response = await fetch(
         `http://n3rd-last-fm-api.glitch.me/getSongs?songQuery=${this.searchText}`
       );
-      this.loading = true;
-      const songs = await response.json();
-      this.loading = false;
-      this.songs = songs.tracks.items;
+      this.fetchError = false;
+      // const response = await fetch(`http://192.168.43.235:1987/getSongs.json`);
+      if (response.ok) {
+        this.fetchError = false;
+        this.illustration = false;
+        this.loading = true;
+        const songs = await response.json();
+        this.loading = false;
+        this.songs = songs.tracks.items;
+      } else {
+        console.error("something went wrong :x");
+        this.illustration = false;
+        this.fetchError = true;
+      }
     },
     playSound(song, songName) {
       const sound = new Howl({
@@ -161,19 +187,33 @@ export default {
   & > input {
     color: #fff !important;
   }
-
-  .q-field__input {
-    color: #fff !important;
-    // set placeholder color
-  }
-  .q-placeholder {
-    text-align: center;
-  }
+}
+.q-field__input {
+  color: #fff !important;
+  text-transform: capitalize;
+}
+.q-placeholder {
+  text-align: center;
 }
 .list {
   // set an accurate top margin
   margin-top: 95px;
 }
-.spinner {
+.illustration,
+.fetch-error {
+  // put the illustration on the center of the page
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  color: #fff;
+}
+// make destop styles
+@media (min-width: 992px) {
+  .illustration,
+  .fetch-error {
+    font-size: 2rem;
+  }
 }
 </style>
