@@ -1,10 +1,7 @@
 <template>
   <div>
-    <!-- add an header -->
-
     <q-toolbar class="bg-primary fixed-top z-max">
       <q-toolbar-title>
-        <!-- router-link to /index -->
         <router-link to="/">
           <q-icon name="arrow_back" class="q-mr-md" />
         </router-link>
@@ -21,18 +18,26 @@
         >
           <div>
             <div class="album-art">
-              <!-- <img :src="song.album.images[0].url" alt="album art" /> -->
               <q-img :src="song.album.images[0].url" alt="album art" :ratio="1">
+                <div
+                  class="play-button absolute-bottom-left all-pointer-events cursor-pointer"
+                  v-if="song.preview_url"
+                  @click="playSound(song.preview_url, song.name)"
+                  style="width: 68px"
+                >
+                  <q-icon name="play_arrow" color="primary" size="xl" />
+                </div>
                 <a
                   :href="song.external_urls.spotify"
                   class="q-pa-md absolute-bottom-right all-pointer-events cursor-pointer"
                   target="_blank"
+                  style="width: 68px"
                 >
                   <img
                     alt=""
                     src="spotify-2.svg"
                     class="spotify-logo-desktop cursor-pointer"
-                    width="10%"
+                    width="100%"
                   />
                 </a>
               </q-img>
@@ -43,14 +48,6 @@
             </div>
             <div class="song-artist">
               {{ song.artists[0].name }}
-              <div
-                class="play-button"
-                v-if="song.preview_url"
-                @click="playSound(song.preview_url, song.name)"
-              >
-                <q-icon name="play_arrow" color="primary" />
-              </div>
-              <!-- add spotify logo with song spotify link -->
             </div>
           </div>
         </div>
@@ -134,15 +131,11 @@ import { ref } from "vue";
 import { Howl, Howler } from "howler";
 import { Swiper, SwiperSlide } from "swiper/vue";
 
-// Import Swiper styles
 import "swiper/css";
 
 import "swiper/css/effect-cards";
 
-// import required modules
 import { EffectCards } from "swiper";
-// import { useQuasar } from "quasar";
-// const $q = useQuasar();
 import notify from "@gabeotisbenson/notify";
 
 export default {
@@ -170,10 +163,6 @@ export default {
         `https://n3rd-last-fm-api.glitch.me/getSimilarTracks?seedTrack=${this.baseSongId}`
       );
       this.fetchError = false;
-
-      // const response = await fetch(
-      //   `http://localhost:1987/getsimilarTracks.json`
-      // );
       if (response.ok) {
         this.fetchError = false;
         const songs = await response.json();
@@ -208,10 +197,6 @@ export default {
     this.baseSongId = localStorage.getItem("app#2SongId");
     this.baseSongName = localStorage.getItem("app#2SongName");
     this.fetchSimilarSongs();
-    // check if mobile
-    // if ($q.platform.is.mobile) {
-    // }
-    // check if mobile screen size is less than 600px with javascript media query
     if (window.matchMedia("(max-width: 600px)").matches) {
       notify.log(`Swipe to go to next or previous song`);
     }
@@ -225,7 +210,6 @@ export default {
 
 <style lang="scss" scoped>
 .preloader {
-  // set fullscreen
   position: fixed;
   top: 0;
   left: 0;
@@ -238,7 +222,6 @@ export default {
   align-items: center;
 }
 .fetch-error {
-  // put the error on the center of the page
   position: absolute;
   top: 50%;
   left: 50%;
@@ -246,7 +229,6 @@ export default {
   font-size: 1.5rem;
   color: #fff;
 }
-// style swipers
 .swiper-container {
   width: 100%;
   height: 100%;
@@ -264,15 +246,11 @@ export default {
   color: #ffffff;
   background-color: #000;
   width: 100vw;
-  /* width: 414px; */
   height: 100vh;
-  // format desktop
   @media (min-width: 992px) {
     width: 414px;
     height: 414px;
   }
-}
-.swiper-slide {
 }
 .swiper-slide img {
   width: 100%;
@@ -290,7 +268,6 @@ export default {
   font-size: 1rem;
   color: #fff;
 }
-// format responsiveness
 @media (max-width: 768px) {
   .swiper-slide {
     width: 100%;
@@ -304,25 +281,13 @@ export default {
   }
 }
 .song-grid {
-  // width: 100%;
   width: 33%;
   img {
     width: 100%;
   }
-
-  // .play-button {
-  //   position: absolute;
-  //   top: 50%;
-  //   left: 50%;
-  //   transform: translate(-50%, -50%);
-  //   font-size: 1.5rem;
-  //   color: #fff;
-  // }
-
-  // height: 100%;
 }
-.spotify-logo-desktop {
-  width: 10%;
-  max-width: 10%;
+.q-img__content > div {
+  background: transparent;
+  cursor: pointer;
 }
 </style>

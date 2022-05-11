@@ -3,8 +3,6 @@
     <div>
       <q-dialog v-model="playing" position="bottom" persistent>
         <q-card style="width: 350px">
-          <!-- <q-linear-progress :value="0.6" color="primary" /> -->
-
           <q-card-section class="row items-center no-wrap bg-primary">
             <div>
               <div class="text-weight-bold">{{ currentSong }}</div>
@@ -86,7 +84,6 @@
         <q-item-section @click="storeSongInfo(song.name, song.id)">
           <q-item-label class="song-name">{{ song.name }}</q-item-label>
           <q-item-label caption lines="1" class="text-white song-artist">
-            <!-- list all the artists -->
             {{ song.artists.map((artist) => artist.name).join(", ") }}
           </q-item-label>
         </q-item-section>
@@ -104,14 +101,10 @@
 </template>
 
 <script>
-// import Player from "../components/Player.vue";
 import { Howl, Howler } from "howler";
 
 export default {
   name: "Index",
-  components: {
-    // Player,
-  },
   data() {
     return {
       searchText: "",
@@ -129,7 +122,6 @@ export default {
         `https://n3rd-last-fm-api.glitch.me/getSongs?songQuery=${this.searchText}`
       );
       this.fetchError = false;
-      // const response = await fetch(`http://192.168.43.235:1987/getSongs.json`);
       if (response.ok) {
         this.fetchError = false;
         this.illustration = false;
@@ -174,14 +166,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// set a search-container variable
-
 #q-app > div > label > div > div > div > div {
   color: #fff;
 }
 .song-name {
   font-size: 1.2rem;
-  // format overflowing text
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -192,7 +181,6 @@ export default {
 .search-music {
   font-size: 1.2rem;
   color: #fff !important;
-  // set the inner text to white
   & > input {
     color: #fff !important;
   }
@@ -205,12 +193,10 @@ export default {
   text-align: center;
 }
 .list {
-  // set an accurate top margin
   margin-top: 121px;
 }
 .illustration,
 .fetch-error {
-  // put the illustration on the center of the page
   position: absolute;
   top: 50%;
   left: 50%;
@@ -221,7 +207,6 @@ export default {
 .illustration-text {
   opacity: 0.5;
 }
-// make destop styles
 @media (min-width: 992px) {
   .illustration,
   .fetch-error {
