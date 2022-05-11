@@ -140,13 +140,13 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `Jeje`,
-        short_name: `Jeje`,
-        description: `An app for making music player screenshots`,
+        name: `Sonicology`,
+        short_name: `Sonicology`,
+        description: `An app that gives you music recommendations based on a single song.`,
         display: "standalone",
         orientation: "portrait",
         background_color: "#ffffff",
-        theme_color: "#027be3",
+        theme_color: "#3f51b5",
         icons: [
           {
             src: "icons/icon-128x128.png",
