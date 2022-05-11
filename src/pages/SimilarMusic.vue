@@ -21,7 +21,21 @@
         >
           <div>
             <div class="album-art">
-              <img :src="song.album.images[0].url" alt="album art" />
+              <!-- <img :src="song.album.images[0].url" alt="album art" /> -->
+              <q-img :src="song.album.images[0].url" alt="album art" :ratio="1">
+                <a
+                  :href="song.external_urls.spotify"
+                  class="q-pa-md absolute-bottom-right all-pointer-events cursor-pointer"
+                  target="_blank"
+                >
+                  <img
+                    alt=""
+                    src="spotify-2.svg"
+                    class="spotify-logo-desktop cursor-pointer"
+                    width="10%"
+                  />
+                </a>
+              </q-img>
             </div>
 
             <div class="song-name">
@@ -36,6 +50,7 @@
               >
                 <q-icon name="play_arrow" color="primary" />
               </div>
+              <!-- add spotify logo with song spotify link -->
             </div>
           </div>
         </div>
@@ -68,15 +83,27 @@
           label="Play"
           icon="play_arrow"
           class="q-mr-sm"
+          v-if="song.preview_url"
         ></q-btn>
+
+        <a
+          :href="song.external_urls.spotify"
+          target="_blank"
+          class="q-pa-md absolute-bottom-right all-pointer-events cursor-pointer"
+        >
+          <img
+            alt=""
+            src="spotify-2.svg"
+            class="spotify-logo-desktop cursor-pointer"
+            width="10%"
+          />
+        </a>
       </swiper-slide>
     </swiper>
 
     <div>
       <q-dialog v-model="playing" position="bottom" persistent>
         <q-card style="width: 350px">
-          <!-- <q-linear-progress :value="0.6" color="primary" /> -->
-
           <q-card-section class="row items-center no-wrap bg-primary">
             <div>
               <div class="text-weight-bold">{{ currentSong }}</div>
@@ -100,44 +127,6 @@
       <br />
       Something went wrong tho.
     </div>
-
-    <!-- <q-list bordered class="text-white q-mt-xl list">
-      <div v-for="song in similarSongs" :key="song.id">
-        <q-item
-          class="q-my-sm"
-          clickable
-          v-ripple
-          v-if="song.album.images.length && song.preview_url"
-        >
-          <q-item-section avatar>
-            <q-avatar color="primary" text-color="white">
-              <q-img
-                v-if="song.album.images.length"
-                :src="song.album.images[0].url"
-                spinner-color="primary"
-                spinner-size="82px"
-              />
-            </q-avatar>
-          </q-item-section>
-
-          <q-item-section @click="storeSongInfo(song.name, song.id)">
-            <q-item-label class="song-name">{{ song.name }}</q-item-label>
-            <q-item-label caption lines="1" class="text-white song-artist">
-
-              {{ song.artists.map((artist) => artist.name).join(", ") }}
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section side v-if="song.preview_url">
-            <q-icon
-              name="play_arrow"
-              color="primary"
-              @click="playSound(song.preview_url, song.name)"
-            />
-          </q-item-section>
-        </q-item>
-      </div>
-    </q-list> -->
   </div>
 </template>
 <script>
@@ -152,6 +141,9 @@ import "swiper/css/effect-cards";
 
 // import required modules
 import { EffectCards } from "swiper";
+// import { useQuasar } from "quasar";
+// const $q = useQuasar();
+import notify from "@gabeotisbenson/notify";
 
 export default {
   name: "similarMusic",
@@ -216,6 +208,14 @@ export default {
     this.baseSongId = localStorage.getItem("app#2SongId");
     this.baseSongName = localStorage.getItem("app#2SongName");
     this.fetchSimilarSongs();
+    // check if mobile
+    // if ($q.platform.is.mobile) {
+    // }
+    // check if mobile screen size is less than 600px with javascript media query
+    if (window.matchMedia("(max-width: 600px)").matches) {
+      notify.log(`Swipe to go to next or previous song`);
+    }
+
     setTimeout(() => {
       this.preloader = false;
     }, 3000);
@@ -250,6 +250,10 @@ export default {
 .swiper-container {
   width: 100%;
   height: 100%;
+}
+.swiper {
+  width: 100%;
+  height: 100vh;
 }
 .swiper-slide {
   text-align: center;
@@ -316,5 +320,9 @@ export default {
   // }
 
   // height: 100%;
+}
+.spotify-logo-desktop {
+  width: 10%;
+  max-width: 10%;
 }
 </style>
