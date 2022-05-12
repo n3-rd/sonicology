@@ -91,8 +91,7 @@
           <img
             alt=""
             src="spotify-2.svg"
-            class="spotify-logo-desktop cursor-pointer"
-            width="10%"
+            class="spotify-logo-mobile cursor-pointer"
           />
         </a>
       </swiper-slide>
@@ -289,5 +288,9 @@ export default {
 .q-img__content > div {
   background: transparent;
   cursor: pointer;
+}
+.spotify-logo-mobile {
+  width: 33px !important;
+  margin-bottom: 33px !important;
 }
 </style>
